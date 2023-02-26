@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Organizer</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.x19257.css"/>
+</head>
+<body>
+<h1>Organizer</h1>
+<h3>Add task to list</h3>
+<form action="/add" method="post">
+  <table border="1px">
+    <tr>
+      <td>
+        <label>Priority</label>
+        <input type="number" name="priorityId">
+      </td>
+      <td>
+        <label>Description</label>
+        <input type="text" name="description">
+      </td>
+      <td>
+        <label>Date</label>
+        <input type="date" name="date">
+      </td>
+
+      <td>
+        <input type="submit" value="add task">
+      </td>
+
+    </tr>
+
+  </table>
+</form>
+<br>
+<table border="1px">
+  <tr>
+    <td>Id</td>
+    <td>Priority</td>
+    <td>Task description</td>
+    <td>Date</td>
+    <td>Delete from list</td>
+  </tr>
+  <tr th:each="vacancy : ${vacanciesList}">
+    <td th:text="${vacancy.vacancyid}"></td>
+    <td th:text="${vacancy.name}"></td>
+    <td th:text="${vacancy.town}"></td>
+    <td th:text="${vacancy.latitude}"></td>
+    <td th:href="${vacancy.longitude}"></td>
+  </tr>
+</table>
+</body>
+</html>

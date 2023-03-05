@@ -15,7 +15,10 @@ public class VacancyService {
     private VacancyRepository vacancyRepository;
 
     public List<Vacancies> getAll() {
-        return vacancyRepository.findAll();
+        return vacancyRepository.findByVacancyidBefore(7000);
+    }
+    public List<Object[]> getCount() {
+        return vacancyRepository.countTotalVacancies();
     }
 
 //    public Task save(Task task) {

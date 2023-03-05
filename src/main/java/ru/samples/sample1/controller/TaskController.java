@@ -1,5 +1,6 @@
 package ru.samples.sample1.controller;
 
+import org.springframework.http.MediaType;
 import ru.samples.sample1.entity.Task;
 import ru.samples.sample1.service.TaskService;
 
@@ -24,10 +25,19 @@ public class TaskController {
     @GetMapping("/")
     public String getAll(Model model) {
         List<Vacancies> vacanciesList = vacancyService.getAll();
+        List<Object[]> TownCount= vacancyService.getCount();
         model.addAttribute("vacanciesList", vacanciesList);
         model.addAttribute("vacanciesSize", vacanciesList.size());
-        return "index";
+        model.addAttribute("townCount", TownCount);
+        return "index.html";
     }
+    @GetMapping("/getCount")
+    public String getCount(Model model) {
+        List<Object[]> TownCount= vacancyService.getCount();
+        model.addAttribute("townCount", TownCount);
+        return null;
+    }
+
 
 //    @RequestMapping("/delete/{id}")
 //    public String deleteTask(@PathVariable int id) {

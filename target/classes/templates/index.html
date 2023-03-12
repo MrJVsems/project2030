@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Organizer</title>
+  <title>Project2030</title>
   <link rel="stylesheet" type="text/css" href="/css/style.x19257.css"/>
 </head>
 <body>
@@ -15,25 +15,43 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://raw.githubusercontent.com/google/palette.js/master/palette.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<select id="selectSpec">
+
+  <option th:each="sl : ${specList}" th:value="${sl.vacanciestablename}" th:text="${sl.name}"></option>
+
+</select>
+<div align="center">
+  <button id="btn-get-data">Обновить</button>
+</div>
+<div align="center">
+  <button id="btn-drop-data">Удалить</button>
+</div>
+<div class="col-sm-7" id="postResultDiv"></div>
 <div align="center" id="divChart">
   <canvas id="canvas" width="800" height="800"></canvas>
 </div>
 <script th:src="@{/js/jquery-1.6.2.js}" type="text/javascript"></script>
 <script>
-  $(document).ready ( function(){
-    graphCreate();
-  });
-  function graphCreate() {
+  document.getElementById('btn-get-data').onclick = function (){
+    var tablename = document.getElementById("selectSpec").value;
+    graphCreate(tablename)
+  }
+  document.getElementById('btn-drop-data').onclick = function (){
+    var ctx = document.getElementById('canvas').getContext('2d');
+    let myChart = new Chart(ctx, {
+
+    });
+    myChart.destroy();
+  }
+  function graphCreate(tablename) {
     $.ajax({
       type : "GET",
-      url : window.location + "api/towncount/all",
+      url : window.location + "api/towncount/" + tablename,
       success: function (result) {
-        $("#postResultDiv").html("" + result.data + "");
         const obj = JSON.parse(result.data);
         const labels = obj.map(function (e) {
           return e[1];
         });
-
         const backgroundcolor = [];
         for (i = 0; i < labels.length; i++) {
           const r = Math.floor(Math.random() * 255);
@@ -41,18 +59,18 @@
           const b = Math.floor(Math.random() * 255);
           backgroundcolor.push('rgba(' + r + ', ' + g + ', ' + b + ', 1.0)');
         }
-        console.log(labels);
         const data = obj.map(function (e) {
           return e[0];
         });
-
-        const ctx = canvas.getContext('2d');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        //$("#postResultDiv").html("" + data + "");
         const config = {
           type: 'bar',
           data: {
             labels: labels,
             datasets: [{
-              label: 'Статистика сообщений',
+              label: 'Количество специальностей',
               backgroundColor: backgroundcolor,
               data: data,
             }]
@@ -61,8 +79,7 @@
             responsive: false,
           },
         };
-
-        const chart = new Chart(ctx, config);
+        let myChart = new Chart(ctx, config);
       },
       error: function (result) {
         console.log('something went wrong')
@@ -70,42 +87,15 @@
     });
   }
 </script>
-<h1>Organizer</h1>
-<h3>Add task to list</h3>
-<div class="col-sm-7" id="postResultDiv"></div>
-<form action="/add" method="post">
-  <table border="1px">
-    <tr>
-      <td>
-        <label>Priority</label>
-        <input type="number" name="priorityId">
-      </td>
-      <td>
-        <label>Description</label>
-        <input type="text" name="description">
-      </td>
-      <td>
-        <label>Date</label>
-        <input type="date" name="date">
-      </td>
-
-      <td>
-        <input type="submit" value="add task">
-      </td>
-
-    </tr>
-
-  </table>
-</form>
 <br>
 <table border="1px">
   <tr>
     <td>Город</td>
     <td>Количество специальностей</td>
   </tr>
-  <tr th:each="tC : ${townCount}">
-    <td th:text="${tC[1]}"></td>
-    <td th:text="${tC[0]}"></td>
+  <tr th:each="sl : ${specList}">
+    <td th:text="${sl.name}"></td>
+    <td th:text="${sl.code}"></td>
   </tr>
 </table>
 </body>

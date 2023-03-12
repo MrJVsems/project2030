@@ -1,15 +1,12 @@
 package ru.samples.sample1.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Entity
-public class Vacancies {
+public class Vacancies_PI {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,12 +42,12 @@ public class Vacancies {
 
     private Character trial729;
 
-    public Vacancies() {
+    public Vacancies_PI() {
     }
 
-    public Vacancies(Integer vacancyid, Integer serviceid, String id, String url, String publishedat, String name,
-                Integer salaryfrom, Integer salaryto, String currency, String country, String area, String town,
-                Float latitude, Float longitude, String firmname, Character trial729) {
+    public Vacancies_PI(Integer vacancyid, Integer serviceid, String id, String url, String publishedat, String name,
+                        Integer salaryfrom, Integer salaryto, String currency, String country, String area, String town,
+                        Float latitude, Float longitude, String firmname, Character trial729) {
 
         this.vacancyid = vacancyid;
         this.serviceid = serviceid;

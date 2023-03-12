@@ -1,11 +1,9 @@
 package ru.samples.sample1.controller;
 
-import org.springframework.http.MediaType;
-import ru.samples.sample1.entity.Task;
-import ru.samples.sample1.service.TaskService;
-
-import ru.samples.sample1.entity.Vacancies;
-import ru.samples.sample1.service.VacancyService;
+import ru.samples.sample1.entity.Specialties;
+import ru.samples.sample1.entity.Vacancies_PI;
+import ru.samples.sample1.service.Vacancy_PI_Service;
+import ru.samples.sample1.service.Specialties_Service;
 
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +18,22 @@ import java.util.List;
 public class TaskController {
 
     @Autowired
-    private VacancyService vacancyService;
+    private Vacancy_PI_Service vacancyPiService;
+    @Autowired
+    private Specialties_Service specialtiesService;
 
     @GetMapping("/")
     public String getAll(Model model) {
-        List<Vacancies> vacanciesList = vacancyService.getAll();
-        List<Object[]> TownCount= vacancyService.getCount();
-        model.addAttribute("vacanciesList", vacanciesList);
-        model.addAttribute("vacanciesSize", vacanciesList.size());
+        List<Vacancies_PI> vacanciesList = vacancyPiService.getAll();
+        List<Object[]> TownCount= vacancyPiService.getCount();
+        List<Specialties> SpecialtyList = specialtiesService.getAll();
+        model.addAttribute("specList", SpecialtyList);
         model.addAttribute("townCount", TownCount);
         return "index.html";
     }
     @GetMapping("/getCount")
     public String getCount(Model model) {
-        List<Object[]> TownCount= vacancyService.getCount();
+        List<Object[]> TownCount= vacancyPiService.getCount();
         model.addAttribute("townCount", TownCount);
         return null;
     }
